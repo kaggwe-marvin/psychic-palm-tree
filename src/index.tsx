@@ -36,6 +36,6 @@ app
 .route('/admin', admin)
 .route('/staff', staff)
 .route('/student', student)
-.route('auth', auth)
+.route('/auth', auth)
 
 export default app;
