@@ -1,15 +1,15 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
-import { users } from './db/schema';
+import { students, users } from './db/schema';
 import Home from './pages/Home';
 import TodoItem from './components/TodoItem';
-import { eq } from 'drizzle-orm';
+import admin from './routes/admin';
+import staff from './routes/staff';
+import student from './routes/student';
+import auth from './routes/auth';
 
 // Add the D1Database type import
 import type { D1Database } from '@cloudflare/workers-types';
-import AdminPortal from './pages/AdminPortal';
-import StaffPortal from './pages/StaffPortal';
-import StudentPortal from './pages/StudentPortal';
 
 const app = new Hono<{Bindings: Env}>();
 
@@ -33,14 +33,9 @@ app
     </>,
   );
 })
-.get('/admin', (c) => {
-  return c.html(<AdminPortal/>);
-})
-.get('/staff', (c) => {
-  return c.html(<StaffPortal/>);
-})
-.get('/student', async (c) => {
-  return c.html(<StudentPortal/>);
-})
+.route('/admin', admin)
+.route('/staff', staff)
+.route('/student', student)
+.route('auth', auth)
 
 export default app;
