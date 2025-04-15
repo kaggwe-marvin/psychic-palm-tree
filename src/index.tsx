@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
-import { students, users } from './db/schema';
+import { users } from './db/schema';
 import Home from './pages/Home';
 import TodoItem from './components/TodoItem';
 import admin from './routes/admin';
@@ -18,7 +18,7 @@ export type Env = {
 }
 
 app
-.get('/', (c) => {
+.get('/home', (c) => {
   const db = drizzle(c.env.DB);
   return c.html(<Home/>);
 })
