@@ -1,10 +1,13 @@
 import { Hono } from "hono";
-import AdminPortal from "../pages/AdminPortal";
-import Courses from "../pages/admin/courses";
 import Dashboard from "../pages/admin/dashboard";
-import Reports from "../pages/admin/reports";
-import Settings from "../pages/admin/settings";
+import Roles from "../pages/admin/roles";
+import Students from "../pages/admin/students";
 import Users from "../pages/admin/users";
+import Departments from "../pages/admin/departments";
+import Requirements from "../pages/admin/requirements";
+import Settings from "../pages/admin/settings";
+import Logs from "../pages/admin/logs";
+import Reports from "../pages/admin/reports";
 
 const app = new Hono<{Bindings: Env}>();
 
@@ -13,24 +16,34 @@ export type Env = {
 }
 
 app
-.get('/', (c) => {
-  return c.html(<AdminPortal/>);
+.get('/departments', (c) => {
+  return c.html(<Departments/>);
 })
-.get('/courses', (c) => {
-  return c.html(<Courses/>);
-})
-.get('/dashboard', async (c) => {
+.get('/', async (c) => {
   return c.html(<Dashboard/>);
 })
-.get('/report', async (c) => {
-  return c.html(<Reports/>);
+.get('/roles', async (c) => {
+  return c.html(<Roles/>);
 })
-.get('/settings', async (c) => {
-  return c.html(<Settings/>);
+.get('/students', async (c) => {
+  return c.html(<Students/>);
 })
 .get('/users', async (c) => {
   return c.html(<Users/>);
 })
+.get('/requirements', (c) => {
+  return c.html(<Requirements/>);
+})
+.get('/settings', (c) =>{
+  return c.html(<Settings/>)
+})
+.get('/logs', (c) => {
+  return c.html(<Logs/>);
+})
+.get('/reports', (c) => {
+  return c.html(<Reports/>);
+})
+
 
 
 export default app
