@@ -8,18 +8,21 @@ import Requirements from "../pages/admin/requirements";
 import Settings from "../pages/admin/settings";
 import Logs from "../pages/admin/logs";
 import Reports from "../pages/admin/reports";
+import { Bindings, Variables } from "../bindings";
 
-const app = new Hono<{Bindings: Env}>();
+const app = new Hono<{Bindings: Bindings; Variables: Variables;}>();
 
-export type Env = {
-  DB: D1Database
-}
 
 app
 .get('/departments', (c) => {
+
   return c.html(<Departments/>);
 })
 .get('/', async (c) => {
+  const user = c.get('user');
+  if (!user){
+    return c.notFound()
+  }
   return c.html(<Dashboard/>);
 })
 .get('/roles', async (c) => {

@@ -1,13 +1,13 @@
 import { AuthForm } from "../../components/AuthForm";
 import AuthLayout from "../../components/layout/AuthLayout";
 
-export default function Login() {
+export default function Signup() {
   return (
-    <AuthLayout title="Login">
+    <AuthLayout title="Signup">
       <div class="flex justify-center">
-      <AuthForm
-          action="Log in"
-          description="Enter your email below to login to your account."
+        <AuthForm
+          action="Sign up"
+          description="Enter your email below to create your account."
         />
       </div>
     </AuthLayout>

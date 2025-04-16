@@ -7,15 +7,18 @@ import document from "./documents";
 import Library from "../pages/student/library";
 import Department from "../pages/student/department";
 import Profile from "../pages/student/profile";
+import { Bindings, Variables } from "../bindings";
 
-const app = new Hono<{Bindings: Env}>();
+const app = new Hono<{Bindings: Bindings; Variables: Variables}>();
 
-export type Env = {
-  DB: D1Database
-}
+
 
 app
 .get('/', (c) => {
+  const user = c.get('user');
+  if (!user){
+    return c.notFound()
+  }
   return c.html(<Dashboard/>);
 })
 .get('/clearance_status', (c) => {

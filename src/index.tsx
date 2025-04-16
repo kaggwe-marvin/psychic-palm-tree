@@ -19,9 +19,10 @@ app
 app
 .get('/', async (c) => {
   const user = c.get('user');
-  if (!user) {
-    return c.redirect('/auth')
+  if (user) {
+    return c.redirect('/student')
   }
+  return c.redirect('/auth')
 })
 .route('/admin', admin)
 .route('/staff', staff)

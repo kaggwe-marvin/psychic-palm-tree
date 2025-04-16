@@ -24,8 +24,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "clearance", 
-      "database_id": "ab622c86-2ad6-47af-b65c-90eacfb13c07"
+      "database_name": "v1", 
+      "database_id": "61fa60d3-0b8d-4cbb-8349-b29065a7255c"
     }
   ]
   // "ai": {

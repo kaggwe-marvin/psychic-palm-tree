@@ -1,4 +1,17 @@
-export default function StudentLayout({ children, title }: { children: any, title: string }) {
+type StudentLayoutProps = {
+  children: JSX.Element;
+  title: string;
+  user?: {
+    name: string;
+    role: string;
+  };
+};
+
+export default function StudentLayout({
+  children,
+  title,
+  user = { name: "Student User", role: "Student" },
+}: StudentLayoutProps) {
     return (
         <>
             <head>
@@ -78,31 +91,36 @@ export default function StudentLayout({ children, title }: { children: any, titl
 
         
         <div class="flex-1 flex flex-col overflow-hidden">
-          {/* Top Navigation */}
-          <header class="bg-white shadow-sm">
-            <div class="px-4 py-3 flex justify-between items-center">
-              <div>
-                <h2 class="text-xl font-semibold">{title}</h2>
-              </div>
-              <div class="flex items-center space-x-4">
-                <div hx-get="/api/notifications" hx-trigger="load" class="relative">
-                  <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                  </svg>
-                  <span class="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center absolute -top-1 -right-1">3</span>
+            <header class="bg-white shadow z-10">
+              <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                  <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                      <h2 class="text-xl font-semibold text-gray-800">{title}</h2>
+                    </div>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="ml-3 relative">
+                      <div>
+                        <button
+                          type="button"
+                          class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none"
+                        >
+                          <span class="sr-only">Open user menu</span>
+                          <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                            {user.name.charAt(0)}
+                          </div>
+                          <span class="ml-2 text-gray-700">{user.name}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center">
-                  <img src="/api/placeholder/32/32" alt="User" class="w-8 h-8 rounded-full mr-2"/>
-                  <span class="text-sm font-medium">John Doe</span>
-                </div>
               </div>
-            </div>
-          </header>
+            </header>
 
-      
-          <main class="flex-1 overflow-y-auto bg-gray-100 p-6">
-            {children}
-          </main>
+            <main class="flex-1 overflow-y-auto bg-gray-100 p-6">{children}</main>
+          
         </div>
       </div>
     </>
