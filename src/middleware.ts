@@ -29,3 +29,13 @@ export async function authMiddleware(c: Context, next: Next) {
 
     return next();
 }
+
+export function requireRole(roles: string[]) {
+    return async (c: Context, next: Next) => {
+        const user = c.get('user');
+        if (!user || !roles.includes(user.role)) {
+            return c.text('Forbidden', 403);
+        }
+        return next();
+    };
+}

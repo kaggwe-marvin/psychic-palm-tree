@@ -1,8 +1,8 @@
 import StudentLayout from "../../components/layout/StudentLayout";
 
-export default function ClearanceStatus() {
+export default function ClearanceStatus({ user }: { user?: any }) {
     return (
-        <StudentLayout title="Clearance Status">
+        <StudentLayout title="Clearance Status" user={user}>
             <div class="bg-white rounded-lg shadow p-6 mb-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Clearance Progress</h3>
                 <div class="relative">

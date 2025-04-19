@@ -1,8 +1,8 @@
 import StudentLayout from "../../components/layout/StudentLayout";
 
-export default function Profile() {
+export default function Profile({ user }: { user?: any }) {
   return (
-    <StudentLayout  title="Student Profile">
+    <StudentLayout  title="Student Profile" user={user}>
       <div className="bg-white rounded-lg shadow p-6 mb-6">
         <h3 className="text-lg font-medium text-gray-900 mb-4">Student Profile</h3>
 

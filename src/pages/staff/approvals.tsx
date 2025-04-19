@@ -1,8 +1,8 @@
 import StaffLayout from "../../components/layout/StaffLayout";
 
-export default function Approvals() {
+export default function Approvals({ user }: { user?: any }) {
   return (
-    <StaffLayout title="Approvals">
+    <StaffLayout title="Approvals" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Approvals Management</h1>
 

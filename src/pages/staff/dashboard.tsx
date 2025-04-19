@@ -1,8 +1,9 @@
 import StaffLayout from "../../components/layout/StaffLayout";
 
-export default function Dashboard() {
+export default function Dashboard({ user }: { user?: any }) {
   return (
-    <StaffLayout title="Dashboard">
+    <StaffLayout title="Dashboard" user={user}>
+      {/* Dashboard Content */}
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Staff Dashboard</h1>
 

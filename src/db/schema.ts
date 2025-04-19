@@ -7,6 +7,7 @@ export const users = sqliteTable('users', {
   id: text('id').primaryKey().notNull().$defaultFn(()=> generateId(15)),
   email: text('email').notNull().unique(),
   password: text('password').notNull(),
+  role: text('role').notNull().default('student'),
   
 });
 

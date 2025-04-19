@@ -1,8 +1,8 @@
 import StudentLayout from "../../components/layout/StudentLayout"
 
-export default function Dashboard() {
+export default function Dashboard({ user }: { user?: any }) {
   return (
-    <StudentLayout title="Dashboard">
+    <StudentLayout title="Dashboard" user={user}>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     
     <div class="bg-white rounded-lg shadow p-6">

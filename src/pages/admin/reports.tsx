@@ -1,8 +1,8 @@
 import AdminLayout from "../../components/layout/AdminLayout";
 
-export default function Reports() {
+export default function Reports({ user }: { user?: any }) {
   return (
-    <AdminLayout title="System Reports">
+    <AdminLayout title="System Reports" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">System Reports</h1>
 

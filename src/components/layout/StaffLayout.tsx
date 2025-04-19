@@ -12,7 +12,7 @@ type StaffLayoutProps = {
 export default function StaffLayout({
   children,
   title,
-  user = { name: "Staff User", role: "Staff" },
+  user,
 }: StaffLayoutProps) {
   return (
     <html lang="en">
@@ -179,9 +179,9 @@ export default function StaffLayout({
                         >
                           <span class="sr-only">Open user menu</span>
                           <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                            {user.name.charAt(0)}
+                            {user.email.charAt(0)}
                           </div>
-                          <span class="ml-2 text-gray-700">{user.name}</span>
+                          <span class="ml-2 text-gray-700">{user.email}</span>
                         </button>
                       </div>
                     </div>

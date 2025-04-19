@@ -1,8 +1,8 @@
 import AdminLayout from "../../components/layout/AdminLayout";
 
-export default function Roles() {
+export default function Roles({ user }: { user?: any }) {
   return (
-    <AdminLayout title="Roles and Permissions">
+    <AdminLayout title="Roles and Permissions" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Roles and Permissions</h1>
 

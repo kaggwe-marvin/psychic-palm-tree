@@ -1,8 +1,8 @@
 import AdminLayout from "../../components/layout/AdminLayout";
 
-export default function Requirements() {
+export default function Requirements({ user }: { user?: any }) {
   return (
-    <AdminLayout title="Requirements Management">
+    <AdminLayout title="Requirements Management" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Requirements Management</h1>
 

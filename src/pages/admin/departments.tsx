@@ -1,8 +1,8 @@
 import AdminLayout from "../../components/layout/AdminLayout";
 
-export default function Departments() {
+export default function Departments({ user }: { user?: any }) {
   return (
-    <AdminLayout title="Department Management">
+    <AdminLayout title="Department Management" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Department Management</h1>
 

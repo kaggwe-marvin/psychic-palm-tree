@@ -1,8 +1,8 @@
 import StaffLayout from "../../components/layout/StaffLayout";
 
-export default function Profile() {
+export default function Profile({ user }: { user?: any }) {
   return (
-    <StaffLayout title="Profile">
+    <StaffLayout title="Profile" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Profile Management</h1>
 

@@ -1,8 +1,8 @@
 import StaffLayout from "../../components/layout/StaffLayout";
 
-export default function Students() {
+export default function Students({ user }: { user?: any }) {
   return (
-    <StaffLayout title="Students Clearance">
+    <StaffLayout title="Students Clearance" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Students Clearance Management</h1>
 

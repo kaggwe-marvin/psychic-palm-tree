@@ -4,7 +4,7 @@ type AdminLayoutProps = {
   children: JSX.Element;
   title: string;
   user?: {
-    name: string;
+    email: string;
     role: string;
   };
 };
@@ -12,7 +12,7 @@ type AdminLayoutProps = {
 export default function AdminLayout({
   children,
   title,
-  user = { name: "Admin User", role: "Administrator" },
+  user,
 }: AdminLayoutProps) {
   return (
     <html lang="en">
@@ -161,9 +161,9 @@ export default function AdminLayout({
                                 hx-target="#user-menu">
                           <span class="sr-only">Open user menu</span>
                           <div class="h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white">
-                            {user.name.charAt(0)}
+                          {user?.email ? user.email.charAt(0) : "?"}
                           </div>
-                          <span class="ml-2 text-gray-700">{user.name}</span>
+                          <span class="ml-2 text-gray-700">{user?.email ?? "Unknown"}</span>
                           <svg class="h-5 w-5 ml-1 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
                           </svg>

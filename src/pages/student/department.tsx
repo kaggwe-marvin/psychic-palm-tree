@@ -1,8 +1,8 @@
 import StudentLayout from "../../components/layout/StudentLayout";
 
-export default function Department() {
+export default function Department({ user }: { user?: any }) {
   return (
-    <StudentLayout title="Department Clearance">
+    <StudentLayout title="Department Clearance" user={user}>
       <div className="bg-white rounded-lg shadow p-6 mb-6">
         <h3 className="text-lg font-medium text-gray-900 mb-4">Department Clearance</h3>
 

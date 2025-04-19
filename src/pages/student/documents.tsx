@@ -1,8 +1,8 @@
 import StudentLayout from "../../components/layout/StudentLayout";
 
-export default function Documents() {
+export default function Documents({ user }: { user?: any }) {
   return (
-    <StudentLayout title="Documents">
+    <StudentLayout title="Documents" user={user}>
       <div class="bg-white rounded-lg shadow p-6 mb-6">
         <h3 class="text-lg font-medium text-gray-900 mb-4">Clearance Documents</h3>
         <div class="overflow-x-auto">

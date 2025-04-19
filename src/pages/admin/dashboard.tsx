@@ -1,8 +1,11 @@
 import AdminLayout from "../../components/layout/AdminLayout"
 
-export default function Dashboard() {
+
+
+export default function Dashboard({ user }: { user?: any }) {
+  
   return (
-    <AdminLayout title="Dashboard" >
+    <AdminLayout title="Dashboard" user={user}>
     <div>
       <div className="grid grid-cols-1 gap-4 p-4 xl:grid-cols-3">
         {/* Key Statistics Cards */}

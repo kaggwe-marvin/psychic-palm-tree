@@ -1,8 +1,8 @@
 import AdminLayout from "../../components/layout/AdminLayout";
 
-export default function Students() {
+export default function Students({ user }: { user?: any }) {
   return (
-    <AdminLayout title="Student Management">
+    <AdminLayout title="Student Management" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Student Management</h1>
 

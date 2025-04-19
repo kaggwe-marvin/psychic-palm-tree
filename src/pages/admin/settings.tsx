@@ -1,8 +1,8 @@
 import AdminLayout from "../../components/layout/AdminLayout";
 
-export default function Settings() {
+export default function Settings({ user }: { user?: any }) {
   return (
-    <AdminLayout title="System Settings">
+    <AdminLayout title="System Settings" user={user}>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">System Settings</h1>
 
