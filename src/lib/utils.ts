@@ -18,6 +18,10 @@ export async function insertUser(
   db: DrizzleD1Database,
   data: InsertUser
 ): Promise<SelectUser | null> {
+  if (!data.role) {
+    throw new Error("Role must be provided when inserting a user.");
+  }
+  
   const result = await db.insert(users).values(data).returning();
   if (!result || result.length === 0) {
     return null;

@@ -12,7 +12,7 @@ const app = new Hono<{Bindings: Bindings; Variables: Variables}>();
 
 app
 app
-.use('*', requireRole(['staff, admin']))
+.use('*', requireRole(['staff']))
 .get('/approvals', (c) => {
   const user = c.get('user');
   return c.html(<Approvals user={user}/>);

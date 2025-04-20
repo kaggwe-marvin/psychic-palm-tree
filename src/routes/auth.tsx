@@ -51,7 +51,13 @@ app
 
     c.header('Set-Cookie', cookie.serialize(), { append: true });
 
-    return c.redirect('/student');
+    const routes: Record<string, string> = {
+      student: '/student',
+      staff: '/staff',
+      admin: '/admin',
+    };
+    
+    return c.redirect(routes[user.role] ?? '/');
   }
 )
 .post('/signup',
@@ -66,6 +72,23 @@ app
     const { email, password } = await c.req.valid('form');
     const db = drizzle(c.env.DB);
 
+    // Email validation and role assignment
+    const mubsDomain = '@mubs.ac.ug';
+    if (!email.endsWith(mubsDomain)) {
+      return c.json({ error: 'Email must be a @mubs.ac.ug address.' }, 400);
+    }
+
+    const studentRegex = /^\d+@mubs\.ac\.ug$/;
+    let role: 'student' | 'staff';
+
+    if (studentRegex.test(email)) {
+      role = 'student';
+    } else if (/^[^@]+@mubs\.ac\.ug$/.test(email)) {
+      role = 'staff';
+    } else {
+      return c.json({ error: 'Invalid @mubs.ac.ug email format.' }, 400);
+    }
+
     const existingUser = await getUser(db, email);
     if (existingUser) {
       return c.json({ error: 'User with that email already exists.' }, 400);
@@ -73,9 +96,12 @@ app
 
     const passwordHash = await new Scrypt().hash(password);
 
+    
+
     const user = await insertUser(db, {
       email,
       password: passwordHash,
+      role,
     });
     if (!user) {
       return c.json({ error: 'An error occurred during sign up.' }, 500);
@@ -87,7 +113,7 @@ app
 
     c.header('Set-Cookie', cookie.serialize(), { append: true });
 
-    return c.redirect('/admin');
+    return c.redirect(role === 'student' ? '/student' : '/staff');
   }
 )
 

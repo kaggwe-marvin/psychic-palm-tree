@@ -108,7 +108,7 @@ export default function StudentLayout({
                         >
                           <span class="sr-only">Open user menu</span>
                           <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                          {user?.email ? user.email.charAt(0) : "?"}
+                          {user?.email ? user.role.charAt(0) : "?"}
                           </div>
                           <span class="ml-2 text-gray-700">{user?.email ?? "Unknown"}</span>
                         </button>

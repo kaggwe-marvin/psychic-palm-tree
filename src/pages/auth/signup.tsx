@@ -10,6 +10,13 @@ export default function Signup() {
           description="Enter your email below to create your account."
         />
       </div>
+      <div class="mt-4 text-center text-sm">
+        Already have an account?{" "}
+        <a href="/auth"
+           class="text-blue-600 hover:underline">
+          Log in
+        </a>
+      </div>
     </AuthLayout>
   );
 }

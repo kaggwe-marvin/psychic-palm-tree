@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0ba2b21c-cb63-4764-8927-cab8e70ee56b",
+  "id": "43bb9ca7-2a44-4bc8-aaf4-5213e77c208b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "sessions": {
@@ -78,8 +78,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'student'"
+          "autoincrement": false
         }
       },
       "indexes": {
