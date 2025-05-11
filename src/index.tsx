@@ -6,6 +6,7 @@ import auth from './routes/auth';
 import { Bindings, Variables } from './bindings';
 import { authMiddleware } from './middleware';
 import { csrf } from 'hono/csrf';
+import { serveStatic } from 'hono/cloudflare-workers';
 
 
 const app = new Hono<{Bindings: Bindings; Variables: Variables;}>();
@@ -14,6 +15,7 @@ const app = new Hono<{Bindings: Bindings; Variables: Variables;}>();
 app
 .use(csrf())
 .use('*', authMiddleware)
+
 
 
 app

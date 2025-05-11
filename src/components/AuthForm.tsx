@@ -1,5 +1,5 @@
-import Button from "./ui/Button";
-import Input from "./ui/Input";
+import Input from "./ui/atoms/Input";
+import Button from "./ui/atoms/Button";
 
 type AuthFormProps = {
   description: string;

@@ -5,7 +5,6 @@ import ClearanceStatus from "../pages/student/clearance_status";
 import Documents from "../pages/student/documents";
 import document from "./documents";
 import Library from "../pages/student/library";
-import Department from "../pages/student/department";
 import Profile from "../pages/student/profile";
 import { Bindings, Variables } from "../bindings";
 import { requireRole } from "../middleware";
@@ -42,10 +41,6 @@ app
 .get('/library', (c)=>{
   const user = c.get('user');
     return c.html(<Library user={user}/>)
-})
-.get('/department', (c)=>{
-  const user = c.get('user');
-    return c.html(<Department user={user}/>)
 })
 .route('/api/documents', document)
 export default app
