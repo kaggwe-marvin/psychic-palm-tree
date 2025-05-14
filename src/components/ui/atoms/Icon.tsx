@@ -1,33 +1,26 @@
-/**
- * Franken UI Icon Atom (HTML, CDN, Lucide-based)
- * Usage example:
- *   Icon({ icon: "smile", clsCustom: "text-blue-600", width: "24", height: "24", strokeWidth: "2" })
- */
+import { JSX } from 'hono/jsx';
 
 type IconProps = {
-  icon: string; // Lucide icon name, e.g. "smile"
-  clsCustom?: string; // Custom CSS classes for SVG
-  width?: string | number; // SVG width
-  height?: string | number; // SVG height
-  strokeWidth?: string | number; // SVG stroke width
+  name: string;
+  className?: string;
+  size?: string | number;
+  strokeWidth?: number;
+  color?: string;
 };
 
-export function Icon({
-  icon,
-  clsCustom = "",
-  width = "16",
-  height = "16",
-  strokeWidth = "2",
-}: IconProps): string {
-  return `
-    <div class="size-4">
-      <uk-icon
-        icon="${icon}"
-        cls-custom="${clsCustom}"
-        width="${width}"
-        height="${height}"
-        stroke-width="${strokeWidth}"
-      ></uk-icon>
-    </div>
-  `.trim();
+export default function Icon({ name, className = "", size = 24, strokeWidth = 1.5, color = "currentColor" }: IconProps) {
+  // Build the class string, combining any passed classes with default styling
+  const classes = `${className}`.trim();
+  
+  // Convert size to string with 'px' if it's a number
+  const sizeValue = typeof size === 'number' ? `${size}px` : size;
+  
+  // Return an element with data-lucide attribute that will be processed by lucide.createIcons()
+  return (
+    <i 
+      data-lucide={name} 
+      class={classes}
+      style={`width: ${sizeValue}; height: ${sizeValue}; stroke-width: ${strokeWidth};${color !== 'currentColor' ? ` color: ${color};` : ''}`}
+    ></i>
+  );
 }

@@ -6,9 +6,6 @@ import auth from './routes/auth';
 import { Bindings, Variables } from './bindings';
 import { authMiddleware } from './middleware';
 import { csrf } from 'hono/csrf';
-import { serveStatic } from 'hono/cloudflare-workers';
-
-
 const app = new Hono<{Bindings: Bindings; Variables: Variables;}>();
 
 
@@ -22,7 +19,13 @@ app
 .get('/', async (c) => {
   const user = c.get('user');
   if (user) {
-    return c.redirect('/student')
+    // Redirect users based on their role
+    const routes = {
+      student: '/student',
+      staff: '/staff',
+      admin: '/admin'
+    };
+    return c.redirect(routes[user.role] || '/student');
   }
   return c.redirect('/auth')
 })

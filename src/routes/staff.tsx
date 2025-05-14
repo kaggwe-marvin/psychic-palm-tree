@@ -1,37 +1,43 @@
-import { Hono } from "hono";
-import Approvals from "../pages/staff/approvals";
-import Dashboard from "../pages/staff/dashboard";
-import Profile from "../pages/staff/profile";
-import Students from "../pages/staff/students";
+import { Context, Hono } from "hono";
+import Approvals from "../components/ui/pages/staff/approvals";
+import Profile from "../components/ui/pages/staff/profile";
+import Students from "../components/ui/pages/staff/students";
+import { StaffDashboard } from "../components/ui/pages/staff/StaffDashboard";
 import { Bindings, Variables } from "../bindings";
 import { requireRole } from "../middleware";
+import { UserProvider } from "../contexts/UserContext";
+import { mapUserForContext } from "../lib/userHelper";
 
 const app = new Hono<{Bindings: Bindings; Variables: Variables}>();
 
+// Helper function to handle user checks and context wrapping
+// The renderFn allows components to be rendered with props derived from the user
+const withUserContext = (c: Context, renderFn: (user: any) => any) => {
+  const luciaUser = c.get('user');
+  if (!luciaUser) {
+    return c.notFound();
+  }
+  // Map Lucia user to our UserContext User type
+  const user = mapUserForContext(luciaUser);
+  
+  return c.html(
+    <UserProvider user={user}>
+      {renderFn(user)}
+    </UserProvider>
+  );
+}
 
-
-app
 app
 .use('*', requireRole(['staff']))
-.get('/approvals', (c) => {
-  const user = c.get('user');
-  return c.html(<Approvals user={user}/>);
-})
-.get('/', (c) => {
-  const user = c.get('user');
-  if (!user){
-    return c.notFound()
-  }
-  return c.html(<Dashboard user={user}/>);
-})
-.get('/profile', (c)=>{
-  const user = c.get('user');
-    return c.html(<Profile user={user}/>)
-})
-.get('/students', (c)=>{
-  const user = c.get('user');
-    return c.html(<Students user={user}/>)
-})
-
+.get('/', (c) => withUserContext(c, (user) => (
+  <StaffDashboard 
+    staffName={user.name || 'Staff User'} 
+    staffEmail={user.email}
+    departmentName={user.department || 'Unknown Department'} 
+  />
+)))
+.get('/approvals', (c) => withUserContext(c, () => <Approvals />))
+.get('/profile', (c) => withUserContext(c, () => <Profile />))
+.get('/students', (c) => withUserContext(c, () => <Students />));
 
 export default app

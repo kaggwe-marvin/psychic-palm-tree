@@ -1,30 +1,53 @@
-type ButtonProps = {
-  type: 'submit' | 'button';
-  text: string;
-};
+import { FC } from 'hono/jsx'
+import { PropsWithChildren } from 'hono/jsx'
 
-export default function Button({ type, text }: ButtonProps) {
+type ButtonProps = PropsWithChildren<{
+  variant?: 'primary' | 'success' | 'danger' | 'warning' | 'outline'
+  size?: 'sm' | 'md' | 'lg'
+  onClick?: () => void
+  disabled?: boolean
+  type?: 'button' | 'submit' | 'reset'
+  fullWidth?: boolean
+  className?: string
+}>
+
+export const Button: FC<ButtonProps> = ({ 
+  children, 
+  variant = 'primary', 
+  size = 'md', 
+  onClick,
+  disabled = false,
+  type = 'button',
+  fullWidth = false,
+  className = ''
+}) => {
+  const baseClasses = "font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors"
+  
+  const variantClasses = {
+    primary: "bg-primary text-white hover:bg-primary/90 focus:ring-primary/50",
+    success: "bg-success text-white hover:bg-success/90 focus:ring-success/50",
+    danger: "bg-danger text-white hover:bg-danger/90 focus:ring-danger/50",
+    warning: "bg-warning text-white hover:bg-warning/90 focus:ring-warning/50",
+    outline: "bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-200"
+  }
+
+  const sizeClasses = {
+    sm: "text-sm px-3 py-1",
+    md: "text-base px-4 py-2",
+    lg: "text-lg px-6 py-3",
+  }
+
+  const widthClass = fullWidth ? 'w-full' : '';
+  const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : '';
+
   return (
-    <button
+    <button 
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${disabledClass} ${className}`}
+      onClick={onClick}
+      disabled={disabled}
       type={type}
-      class="w-full justify-center mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
     >
-      {text}
-      <svg
-        class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 14 10"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M1 5h12m0 0L9 1m4 4L9 9"
-        />
-      </svg>
+      {children}
     </button>
-  );
+  )
 }

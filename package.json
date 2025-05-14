@@ -16,6 +16,7 @@
     "drizzle-seed": "^0.3.1",
     "hono": "^4.7.6",
     "lucia": "^3.2.2",
+    "lucide-react": "^0.509.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
