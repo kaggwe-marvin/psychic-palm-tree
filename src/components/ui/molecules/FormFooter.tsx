@@ -1,6 +1,6 @@
 import { FC } from "hono/jsx";
-import { Link } from "../atoms/Link";
-import { Text } from "../atoms/Text";
+import Link from "../atoms/Link";
+import Text from "../atoms/Text";
 
 type FormFooterProps = {
   mode: "login" | "signup" | "forgot" | "reset";

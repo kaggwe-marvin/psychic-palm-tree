@@ -11,7 +11,7 @@ import AuthTemplate from "../components/ui/templates/AuthTemplate";
 const app = new Hono<{Bindings: Bindings; Variables: Variables}>();
 
 
-//Get the auth pages
+//Get the auth pages 
 app
 .get('/', (c) => {
   return c.html(<AuthTemplate mode="login" />);
@@ -152,11 +152,7 @@ app
       return c.json({ success: true }, 200);
     }
 
-    // In a real implementation, we would:
-    // 1. Generate a unique, time-limited reset token
-    // 2. Store it in the database with the user's ID and an expiration
-    // 3. Send an email with a link to the reset page that includes the token
-
+    
     // For now, we're just returning success
     return c.json({ success: true }, 200);
   }

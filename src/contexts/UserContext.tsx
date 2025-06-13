@@ -8,9 +8,7 @@ export interface User {
   id?: string;
   email: string;
   role: 'student' | 'staff' | 'admin';
-  name?: string;
-  studentId?: string;
-  employeeId?: string;
+  fullName?: string;
   department?: string;
   joinDate?: string;
 }

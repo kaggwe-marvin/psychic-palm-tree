@@ -6,13 +6,14 @@ import auth from './routes/auth';
 import { Bindings, Variables } from './bindings';
 import { authMiddleware } from './middleware';
 import { csrf } from 'hono/csrf';
+import { logger } from 'hono/logger';
 const app = new Hono<{Bindings: Bindings; Variables: Variables;}>();
 
 
 app
 .use(csrf())
+.use(logger())
 .use('*', authMiddleware)
-
 
 
 app

@@ -1,155 +1,130 @@
-import { FC, useState } from 'hono/jsx'
-import { Button } from '../atoms/Button'
-import { Text } from '../atoms/Text'
-import { FileList } from '../../../types/file'
+import { FC } from 'hono/jsx';
+import { Text } from '../atoms/Text';
+import { HtmxForm } from './HtmxForm';
 
-interface DocumentUploaderProps {
-  onUpload: (files: FileList) => void
+type Document = {
+  id: string
+  fileName: string
+  fileSize: number
+  mimeType: string
+  createdAt: string
+}
+
+type DocumentUploaderProps = {
+  clearanceItemId: string
+  existingDocuments?: Document[]
+  disabled?: boolean
   acceptedFileTypes?: string
-  multiple?: boolean
-  helperText?: string
-  maxSize?: number // in MB
+  maxFileSize?: number
 }
 
 export const DocumentUploader: FC<DocumentUploaderProps> = ({
-  onUpload,
-  acceptedFileTypes = '.pdf,.doc,.docx',
-  multiple = false,
-  helperText,
-  maxSize = 5 // Default 5MB
+  clearanceItemId,
+  existingDocuments = [],
+  disabled = false,
+  acceptedFileTypes = '.pdf,.jpg,.jpeg,.png,.doc,.docx',
+  maxFileSize = 5 * 1024 * 1024 // 5MB default
 }) => {
-  const [dragActive, setDragActive] = useState(false)
-  const [fileError, setFileError] = useState<string | null>(null)
-  
-  const handleDrag = (e: any) => {
-    e.preventDefault()
-    e.stopPropagation()
-    
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true)
-    } else if (e.type === 'dragleave') {
-      setDragActive(false)
-    }
-  }
-  
-  const validateFiles = (files: FileList): boolean => {
-    // Check if any files were selected
-    if (files.length === 0) return false
-    
-    // Check file types
-    const acceptedTypesArray = acceptedFileTypes.split(',')
-    const hasInvalidType = Array.from(files).some(file => {
-      const fileExtension = '.' + file.name.split('.').pop()
-      return !acceptedTypesArray.some(type => 
-        type.endsWith(fileExtension) || type === '.*' || type === '*'
-      )
-    })
-    
-    if (hasInvalidType) {
-      setFileError(`Only ${acceptedFileTypes} files are accepted`)
-      return false
-    }
-    
-    // Check file sizes
-    const maxSizeBytes = maxSize * 1024 * 1024 // Convert MB to bytes
-    const hasInvalidSize = Array.from(files).some(file => file.size > maxSizeBytes)
-    
-    if (hasInvalidSize) {
-      setFileError(`Files must be smaller than ${maxSize}MB`)
-      return false
-    }
-    
-    setFileError(null)
-    return true
-  }
-  
-  const handleDrop = (e: any) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-    
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      if (validateFiles(e.dataTransfer.files)) {
-        onUpload(e.dataTransfer.files)
-        e.dataTransfer.clearData()
-      }
-    }
-  }
-  
-  const handleChange = (e: any) => {
-    e.preventDefault()
-    if (e.target.files && e.target.files.length > 0) {
-      if (validateFiles(e.target.files)) {
-        onUpload(e.target.files)
-        // Reset the file input
-        e.target.value = ""
-      }
-    }
-  }
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  };
   
   return (
-    <div className="w-full">
-      <div
-        className={`border-2 border-dashed rounded-lg p-6 text-center ${
-          dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
-        } ${fileError ? 'border-red-500' : ''}`}
-        onDragEnter={handleDrag}
-        onDragOver={handleDrag}
-        onDragLeave={handleDrag}
-        onDrop={handleDrop}
-      >
-        <div className="flex flex-col items-center justify-center space-y-2">
-          <svg
-            className={`h-12 w-12 ${dragActive ? 'text-blue-500' : 'text-gray-400'}`}
-            stroke="currentColor"
-            fill="none"
-            viewBox="0 0 48 48"
-            aria-hidden="true"
-          >
-            <path
-              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <div className="text-center">
-            <Text size="sm" className="font-medium mb-1">
-              {dragActive ? 'Drop files here' : 'Drag and drop files here or click to upload'}
-            </Text>
-            <Text size="xs" className="text-gray-500">
-              {acceptedFileTypes} files up to {maxSize}MB
-            </Text>
-          </div>
-          <div>
-            <label htmlFor="file-upload" className="cursor-pointer">
-              <Button type="button" variant="primary" size="sm">
-                Browse Files
-              </Button>
-              <input
-                id="file-upload"
-                name="file-upload"
-                type="file"
-                className="sr-only"
-                multiple={multiple}
-                accept={acceptedFileTypes}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
+    <div id={`doc-uploader-${clearanceItemId}`} className="space-y-4">
+      {/* Existing Documents */}
+      {existingDocuments && existingDocuments.length > 0 && (
+        <div className="mt-2">
+          <Text size="sm" className="font-medium mb-2">Uploaded Documents:</Text>
+          <ul id={`documents-list-${clearanceItemId}`} className="divide-y divide-gray-200 bg-gray-50 border border-gray-200 rounded-md">
+            {existingDocuments.map(doc => (
+              <li key={doc.id} id={`doc-item-${doc.id}`} className="flex items-center justify-between py-2 px-3">
+                <div className="flex items-center">
+                  <svg className="h-5 w-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                  </svg>
+                  <div>
+                    <Text size="sm" className="font-medium">{doc.fileName}</Text>
+                    <Text size="xs" className="text-gray-500">{formatFileSize(doc.fileSize)}</Text>
+                  </div>
+                </div>
+                
+                <div className="flex space-x-2">                  <a 
+                    href={`/student/api/documents/file/${doc.id}`}
+                    target="_blank" 
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    View
+                  </a>
+                  {!disabled && (
+                    <button 
+                      hx-delete={`/student/api/documents/file/${doc.id}`}
+                      hx-confirm="Are you sure you want to delete this document?"
+                      hx-target={`#doc-uploader-${clearanceItemId}`}
+                      hx-swap="outerHTML"
+                      className="text-red-600 hover:text-red-800 text-sm"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-      
-      {fileError && (
-        <Text size="xs" className="text-red-500 mt-2">
-          {fileError}
-        </Text>
       )}
       
-      {helperText && !fileError && (
-        <Text size="xs" className="text-gray-500 mt-2">
-          {helperText}
-        </Text>
+      {/* Upload Control */}
+      {!disabled && (
+        <div className="mt-3">          <HtmxForm
+            id={`upload-form-${clearanceItemId}`}
+            action="/student/api/documents/file/upload"
+            method="post"
+            target={`#doc-uploader-${clearanceItemId}`}
+            swap="outerHTML"
+            enctype="multipart/form-data"
+          >
+            <input type="hidden" name="clearanceItemId" value={clearanceItemId} />
+            
+            <div className="flex items-center space-x-2">
+              <input
+                type="file"
+                id={`file-${clearanceItemId}`}
+                name="file"
+                className="hidden"
+                accept={acceptedFileTypes}
+                disabled={disabled}
+                onchange={`if(this.files.length>0) document.getElementById('upload-btn-${clearanceItemId}').click()`}
+              />
+              <label
+                htmlFor={`file-${clearanceItemId}`}
+                className={`cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700`}
+              >
+                Select Document
+              </label>
+              
+              <button 
+                id={`upload-btn-${clearanceItemId}`} 
+                type="submit"
+                className="hidden"
+              >
+                Upload
+              </button>
+              
+              <div id={`upload-indicator-${clearanceItemId}`} className="htmx-indicator flex items-center">
+                <div className="animate-spin h-4 w-4 mr-2 border-b-2 border-blue-600 rounded-full"></div>
+                <span>Uploading...</span>
+              </div>
+              
+              <Text size="xs" className="text-gray-500">
+                {acceptedFileTypes.replace(/\./g, '').toUpperCase()} files up to {maxFileSize / (1024 * 1024)}MB
+              </Text>
+            </div>
+            
+            <div id={`upload-error-${clearanceItemId}`}></div>
+          </HtmxForm>
+        </div>
       )}
     </div>
   )

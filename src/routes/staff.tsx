@@ -1,12 +1,12 @@
 import { Context, Hono } from "hono";
-import Approvals from "../components/ui/pages/staff/approvals";
-import Profile from "../components/ui/pages/staff/profile";
-import Students from "../components/ui/pages/staff/students";
-import { StaffDashboard } from "../components/ui/pages/staff/StaffDashboard";
-import { Bindings, Variables } from "../bindings";
-import { requireRole } from "../middleware";
-import { UserProvider } from "../contexts/UserContext";
 import { mapUserForContext } from "../lib/userHelper";
+import { Bindings, Variables } from "../bindings";
+import { UserProvider } from "../contexts/UserContext";
+import { StaffDashboard } from "../pages/staff/StaffDashboard";
+import Approvals from "../pages/staff/approvals";
+import Profile from "../pages/staff/profile";
+import Students from "../pages/staff/students";
+import { requireRole } from "../middleware";
 
 const app = new Hono<{Bindings: Bindings; Variables: Variables}>();
 

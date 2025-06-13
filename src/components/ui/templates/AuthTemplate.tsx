@@ -1,7 +1,7 @@
 import { FC } from "hono/jsx";
 import { Layout } from "../Layout";
-import { AuthFormComponent } from "../organisms/AuthFormComponent";
-import { Text } from "../atoms/Text";
+import Text from "../atoms/Text";
+import AuthFormComponent from "../../organisms/common/AuthFormComponent";
 
 type AuthTemplateProps = {
   mode?: "login" | "signup" | "forgot" | "reset";

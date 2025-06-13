@@ -19,12 +19,12 @@
   //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   //   }
   // ],
-  // "r2_buckets": [
-  //   {
-  //     "binding": "MY_BUCKET",
-  //     "bucket_name": "my-bucket"
-  //   }
-  // ],
+ "r2_buckets": [
+    {
+      "bucket_name": "clearance-storage",
+      "binding": "BKT"
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",

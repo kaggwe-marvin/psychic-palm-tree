@@ -1,0 +1,1 @@
+ALTER TABLE documents ADD COLUMN requirement_id TEXT REFERENCES requirements(id);

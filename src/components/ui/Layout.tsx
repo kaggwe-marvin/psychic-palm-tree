@@ -10,6 +10,8 @@ export const Layout: FC = ({ children }) => {
         <title>Student Clearance System</title>
         <script src="https://cdn.tailwindcss.com"></script> 
         <script src="https://unpkg.com/lucide@latest"></script> 
+        <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/static/css/htmx.css" />
       {html`
           <script>
             tailwind.config = {
@@ -30,9 +32,13 @@ export const Layout: FC = ({ children }) => {
         `}
         
       </head>
-      <body className="bg-gray-50 text-gray-900 min-h-screen">
+      <body className="bg-gray-50 text-gray-900 min-h-screen" >
         {children}
+        {/* Toast container for notifications */}
+        <div id="toast-container" className="fixed bottom-4 right-4 z-50"></div>
+        
         {html`
+          <script src="/static/js/htmxUtils.js"></script>
           <script>
             // Initialize Lucide icons after the DOM has loaded
             document.addEventListener('DOMContentLoaded', function() {
