@@ -1,112 +1,188 @@
-# Student Clearance System - Product Requirements Document
+# Student Clearance System — Product Requirements Document (PRD)
 
-## Functional Requirements
+## 1. Overview
 
-| Req ID | Description | User Story | Expected Behavior/Outcome |
-|--------|-------------|------------|---------------------------|
-| **AUTH-001** | User Authentication | As a student/staff member, I want to log in to the system securely using my registration number and password. | System validates credentials, establishes session, and redirects to role-appropriate dashboard. |
-| **AUTH-002** | Role-Based Access Control | As a system administrator, I want users to have specific permissions based on their roles (student, staff, admin). | Users can only access features and data appropriate to their role. Role-based navigation and UI elements are displayed. |
+The **Student Clearance System** is a web-based application that digitizes and streamlines end-of-program (or end-of-term) clearance workflows across university departments. It enables students to submit required information and documents, department staff to review and approve/reject submissions, and administrators to configure departments, requirements, and users.
 
-| **STUD-001** | Student Dashboard | As a student, I want to see a summary of my clearance status upon login. | Dashboard displays clearance progress, pending items, notifications, and quick actions. |
-| **STUD-002** | Document Submission | As a student, I want to upload required documents for each department. | Upload interface allows file selection, validates file types/sizes, shows upload progress, and confirms successful submission. |
-| **STUD-003** | Clearance Status Tracking | As a student, I want to track the status of my clearance request across departments. | Visual representation (stepper/table) shows status for each department (pending, approved, rejected) with timestamps. |
-| **STUD-004** | Department Feedback Review | As a student, I want to see feedback from departments if my submission is rejected. | Rejection notifications include specific feedback from department staff explaining issues to address. |
-| **STUD-005** | Final Clearance Certificate | As a cleared student, I want to download my clearance certificate. | System generates a downloadable PDF certificate when all departments have approved the request. |
-| **STAFF-001** | Pending Requests View | As a department staff, I want to see pending clearance requests for my department. | Staff dashboard shows filterable list of pending requests with student details and submission timestamps. |
-| **STAFF-002** | Request Review Interface | As a department staff, I want to review submitted documents and student information. | Staff can view submitted documents, check student details, and access relevant submission history. |
+### Goals
 
-| **ADMIN-001** | User Management | As an admin, I want to create, view, edit, and delete user accounts. | CRUD interface for managing all user accounts with role assignment capabilities. |
+- Reduce turnaround time for student clearance by centralizing submissions and approvals.
+- Improve transparency through real-time clearance status tracking.
+- Provide an auditable, role-based workflow for approvals and rejections.
 
-| **ADMIN-003** | System Logs & Audit Trail | As an admin, I want to view system activity logs for audit purposes. | Detailed logs of all significant system actions with timestamp, user, IP address, and action details. |
+### Out of Scope (for MVP)
 
-| **DATA-001** | Form Validation | As a user, I want immediate feedback on invalid form inputs. | Client-side validation provides real-time feedback on input errors before submission. |
-| **DATA-002** | Document Validation | As a student, I want to know if my documents meet the requirements before submission. | System validates document type, size, and format during upload and provides clear error messages if needed. |
-| **DATA-003** | Department-Specific Rules | As a department staff, I want specific document requirements enforced for my department. | System enforces configurable department-specific rules for required documents and formats. |
-| **INFRA-002** | System Health Monitoring | As an admin, I want to monitor system performance and health. | Dashboard displays system health metrics, resource usage, and error logs. |
+- Payments and billing workflows.
+- Integrations with external student information systems (unless explicitly added later).
+- Advanced analytics beyond basic operational reporting.
 
-| **UI-002** | Accessibility Compliance | As a user with disabilities, I want to navigate the system easily. | Interface complies with WCAG guidelines, supports screen readers, and provides keyboard navigation. |
-| **UI-003** | Guided User Flows | As a new user, I want clear guidance on how to complete processes. | System provides tooltips, help text, and step-by-step guides for key processes. |
+---
 
-## Development Roadmap
+## 2. Scope
 
-### Phase 1: Core System Foundation
-- Implement AUTH-001, AUTH-002
-- Implement STUD-001, STUD-002, STUD-003, STUD-004, STUD-005
-- Design and implement database schema
-- Basic UI framework with responsive design (UI-001)
+### In Scope
 
-### Phase 2: Staff & Admin Interfaces
-- Implement STAFF-001, STAFF-002, STAFF-003, STAFF-004
-- Implement ADMIN-001, ADMIN-002, ADMIN-003, ADMIN-004
-- Implement DATA-001, DATA-002, DATA-003
+- Secure login for students and staff.
+- Role-based access control (student, staff, admin).
+- Student submission workflow (documents and required inputs).
+- Department review workflow (approve/reject with feedback).
+- Clearance status tracking across multiple departments.
+- Final clearance certificate download once fully approved.
+- Administrative management of users, departments, and configuration.
+- Audit trail and system logs.
 
-### Phase 3: System Infrastructure
-- Implement NOTIF-001, NOTIF-002
-- Implement INFRA-001, INFRA-002
-- Implement AUTH-003
-- Enhance UI with guided flows (UI-003)
+### Assumptions
 
-### Phase 4: UX Polish & Responsive UI
-- Complete UI-001 refinements
-- Implement UI-002 (accessibility)
-- Implement STAFF-005 (KPI dashboard)
+- Each clearance request is evaluated by multiple departments.
+- Each department may define its own document requirements.
+- A clearance is “complete” only when all required departments approve.
+
+---
+
+## 3. Personas
+
+### Student
+
+- Submits required documents and details.
+- Tracks clearance progress.
+- Responds to departmental feedback (re-upload/resubmit if rejected).
+- Downloads final certificate when cleared.
+
+### Department Staff
+
+- Reviews pending clearance requests for their department.
+- Views student submissions and supporting documents.
+- Approves or rejects submissions with feedback.
+
+### Administrator
+
+- Manages users and roles.
+- Manages departments and department-specific requirements.
+- Views audit logs and system activity.
+- Oversees system configuration and operational integrity.
+
+---
+
+## 4. Functional Requirements
+
+| Req ID | Description | User Story | Expected Outcome |
+|---|---|---|---|
+| **AUTH-001** | User Authentication | As a student/staff member, I want to log in securely using my registration number and password. | The system validates credentials and establishes a secure session. |
+| **AUTH-002** | Role-Based Access Control (RBAC) | As an administrator, I want users to have permissions based on roles (student, staff, admin). | Users can access only features permitted for their role. |
+| **STUD-001** | Student Dashboard | As a student, I want to see a summary of my clearance status after login. | Dashboard shows progress, pending items, and notifications. |
+| **STUD-002** | Document Submission | As a student, I want to upload required documents for each department. | Uploads validate type/size; status updates on success. |
+| **STUD-003** | Clearance Status Tracking | As a student, I want to track my clearance status across departments. | A progress view (stepper/table) shows per-department status. |
+| **STUD-004** | Feedback Review | As a student, I want to see rejection feedback from departments. | Rejections include clear feedback and required next steps. |
+| **STUD-005** | Clearance Certificate | As a cleared student, I want to download my clearance certificate. | System generates and provides a downloadable certificate after all approvals. |
+| **STAFF-001** | Pending Requests Queue | As department staff, I want to see pending clearance requests for my department. | A filterable list shows requests awaiting review. |
+| **STAFF-002** | Request Review | As department staff, I want to review submitted documents and student details. | Staff can view details/documents and take action. |
+| **STAFF-003** | Approve / Reject with Comments | As department staff, I want to approve or reject submissions with feedback. | Approval advances status; rejection records reasons and notifies student. |
+| **NOTIF-001** | Student Notifications | As a student, I want to be notified when a department updates my request. | System delivers in-app notifications (and optional email later). |
+| **ADMIN-001** | User Management | As an admin, I want to create, view, edit, and delete user accounts. | Admin can manage user lifecycle and assign roles. |
+| **ADMIN-002** | Department Management | As an admin, I want to manage departments and their clearance requirements. | Departments and requirements can be created/updated/deactivated. |
+| **ADMIN-003** | Audit Trail & Logs | As an admin, I want to view system activity logs for auditing. | System records key actions with timestamp, user, and context. |
+| **DATA-001** | Form Validation | As a user, I want immediate feedback on invalid inputs. | Client-side validation provides real-time input feedback. |
+| **DATA-002** | Document Validation | As a student, I want to know if my documents meet requirements. | System validates type/size/format during upload. |
+| **DATA-003** | Department-Specific Rules | As staff, I want department-specific document requirements enforced. | Configurable rules are applied per department. |
+| **INFRA-001** | Operational Reliability | As an admin, I want the system to remain stable under typical usage. | Core flows remain responsive; errors are handled gracefully. |
+| **INFRA-002** | Health Monitoring | As an admin, I want to monitor system performance and health. | Basic health checks and metrics are available for ops. |
+| **UI-001** | Responsive UI | As a user, I want the application to work on mobile and desktop. | UI adapts to common screen sizes. |
+| **UI-002** | Accessibility | As a user with disabilities, I want accessible navigation. | Interface follows WCAG-informed patterns (keyboard, contrast, semantics). |
+| **UI-003** | Guided Flows | As a new user, I want guidance through complex steps. | Tooltips/help text reduce confusion and errors. |
+
+---
+
+## 5. Non-functional Requirements
+
+### Security
+
+- Enforce authentication for protected routes.
+- Apply RBAC checks on all role-sensitive actions.
+- Validate and sanitize inputs (server-side) and protect against common web vulnerabilities.
+
+### Performance
+
+- Pages should load quickly under typical use.
+- Optimize database queries for request listings and status views.
+
+### Reliability & Observability
+
+- Maintain an audit log for critical actions (approval, rejection, account changes).
+- Provide basic system health endpoints/monitoring hooks.
+
+### Usability
+
+- Clear, consistent navigation per role.
+- Student status tracking must be easy to interpret.
+
+---
+
+## 6. Milestones (Roadmap)
+
+### Phase 1 — Core Foundation (MVP)
+
+- AUTH-001, AUTH-002
+- STUD-001 to STUD-005
+- STAFF-001 to STAFF-003
+- Database schema and persistence
+- UI-001 baseline responsiveness
+
+### Phase 2 — Staff & Admin Expansion
+
+- Admin interfaces (ADMIN-001 to ADMIN-003)
+- DATA-001 to DATA-003
+- Improved review tooling and filtering
+
+### Phase 3 — Infrastructure & Notifications
+
+- NOTIF-001
+- INFRA-001, INFRA-002
+- Additional auth hardening (e.g., AUTH-003 if defined later)
+
+### Phase 4 — UX Polish
+
+- UI-002 accessibility improvements
+- UI-003 guided flows
 - Performance optimization and bug fixes
 
-## Technical Architecture Considerations
+---
 
-### Frontend
-- Responsive design with Tailwind CSS
-- Component-based architecture
-- HTMX for interactive elements with minimal JavaScript
-- Form validation library for DATA-001
+## 7. Risks and Mitigations
 
-### Backend
-- MVC architecture for clear separation of concerns
-- RESTful API endpoints for all major functions
-- Middleware for authentication and role-based access control
-- Data validation layer
-- Service layer for business logic
+| Risk Area | Risk | Mitigation |
+|---|---|---|
+| Data Consistency | Partial approvals or mismatched status updates | Use database transactions and well-defined state transitions. |
+| Security | Unauthorized access, insecure uploads | Enforce RBAC, validate uploads, apply secure session management and CSRF protections where applicable. |
+| Performance | Slow dashboards or large request queues | Add pagination, indexing, and query optimization; consider caching where appropriate. |
+| Scalability | Growth in users/departments increases load | Modular architecture, optimize data access, and add monitoring early. |
+| User Adoption | Confusing flows reduce usage | Provide guided UI, good error messages, and clear status indicators. |
 
-### Database
-- Relational database with the following key entities:
-  - Users (id, name, email, role, department_id, etc.)
-  - Departments (id, name, requirements, etc.)
-  - ClearanceRequests (id, student_id, status, submitted_at, etc.)
-  - Documents (id, request_id, department_id, file_path, status, etc.)
-  - ActionLogs (id, user_id, action, timestamp, details, etc.)
+---
 
-## Risk Management
+## 8. Acceptance Criteria (MVP)
 
-| Risk Area | Mitigation Strategy |
-|-----------|---------------------|
-| Data Consistency | Implement database transactions for multi-step processes |
-| Security | Apply proper authentication, input validation, and CSRF protection |
-| Performance | Optimize database queries and implement caching where appropriate |
-| Scalability | Design with modular architecture to allow component scaling |
-| User Adoption | Develop intuitive UI with tooltips and comprehensive documentation |
+### Student
 
-## MVP Acceptance Criteria
+- Can log in.
+- Can submit required documents per department.
+- Can view per-department clearance status.
+- Can see feedback on rejection and resubmit.
+- Can download a clearance certificate once fully approved.
 
-1. Students can:
-   - Log in securely
-   - Submit documents for clearance
+### Department Staff
 
-2. Staff can:
-   - Review pending clearance requests
-   - View submitted documents
-   - Approve or reject with comments
+- Can log in and see a queue of pending requests.
+- Can review student details and documents.
+- Can approve or reject with comments.
 
-3. Administrators can:
-   - Manage user accounts
-   - View system logs
+### Administrator
 
-4. System requirements:
-   - Secure authentication
-   - Role-based access control
-<<<<<<< HEAD:README.md
-   - Data validation
-   - Basic notification system
-   - Mobile-responsive design
-=======
-   - Data validation
->>>>>>> a076d2e (feat: Add student clearance status page with detailed progress tracking and notifications):docs/README.md
+- Can manage users and assign roles.
+- Can manage departments and requirements (at minimum: create/edit).
+- Can view audit logs of critical actions.
+
+### System
+
+- Enforces role-based access control.
+- Validates inputs and documents.
+- UI is mobile-responsive.
